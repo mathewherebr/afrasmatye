@@ -1,144 +1,127 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>afrasmatye - Criptografia de Senha Algébrica</title>
-<style>
-  body {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #eee;
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  }
-  h1 {
-    text-align: center;
-    margin-bottom: 1.2rem;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  input[type="text"] {
-    width: 100%;
-    padding: 12px 10px;
-    font-size: 1.2rem;
-    border-radius: 8px;
-    border: none;
-    margin-top: 8px;
-    box-sizing: border-box;
-  }
-  button {
-    margin-top: 25px;
-    width: 100%;
-    padding: 14px 0;
-    background-color: #f6a821;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #222;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #d18b1a;
-  }
-  #resultado, #descriptografado {
-    margin-top: 25px;
-    background: rgba(255,255,255,0.1);
-    padding: 18px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    word-break: break-word;
-  }
-  .error {
-    color: #ff7373;
-    margin-top: 10px;
-    font-weight: 600;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Criptografia Afrasmatye</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #181818, #1e1e1e);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #00ffcc;
+      text-align: center;
+    }
+
+    .container {
+      background-color: #222;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    input {
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-bottom: 1rem;
+      width: 100%;
+      background-color: #333;
+      color: #fff;
+    }
+
+    button {
+      background: #00ffcc;
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: #00e6b8;
+      box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+    }
+
+    .output {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      background-color: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      word-break: break-all;
+      color: #00ffcc;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+  <h1>🔐 Sistema Afrasmatye de Criptografia</h1>
+  <div class="container">
+    <input type="text" id="senha" placeholder="Digite uma senha de 4 dígitos (1-9)">
+    <button onclick="criptografar()">Criptografar</button>
+    <div class="output" id="resultado"></div>
+  </div>
 
-<h1>afrasmatye - Criptografia de Senha Algébrica</h1>
+  <script>
+    function criptografar() {
+      const senha = document.getElementById('senha').value.trim();
+      const resultado = document.getElementById('resultado');
 
-<label for="senha">Digite sua senha (4 dígitos, todos diferentes, sem zeros):</label>
-<input id="senha" type="text" maxlength="4" placeholder="Ex: 1234" />
+      if (!/^[1-9]{4}$/.test(senha)) {
+        resultado.textContent = '⚠️ A senha deve conter exatamente 4 dígitos de 1 a 9 (sem zeros ou letras).';
+        return;
+      }
 
-<button onclick="criptografar()">Criptografar e Descriptografar</button>
+      const A = parseInt(senha[0]);
+      const B = parseInt(senha[1]);
+      const C = parseInt(senha[2]);
+      const D = parseInt(senha[3]);
 
-<div id="resultado"></div>
-<div id="descriptografado"></div>
+      const X = 4 * A + 5;
+      const Y = 2 * B * B - 3;
+      const Z = 3 * C + 7;
+      const W = 5 * D - 4;
 
-<script>
-function validarSenha(senha) {
-  if (senha.length !== 4) return 'Senha deve ter exatamente 4 dígitos.';
-  if (!/^[1-9]{4}$/.test(senha)) return 'Senha deve conter apenas dígitos de 1 a 9, sem zeros.';
-  const digitos = new Set(senha.split(''));
-  if (digitos.size !== 4) return 'Todos os dígitos devem ser diferentes.';
-  return null;
-}
+      const criptografada = `${X.toString().padStart(2, '0')}${Y.toString().padStart(2, '0')}${Z.toString().padStart(2, '0')}${W.toString().padStart(2, '0')}`;
 
-function criptografar() {
-  const senhaInput = document.getElementById('senha').value.trim();
-  const resultado = document.getElementById('resultado');
-  const descriptografado = document.getElementById('descriptografado');
-  resultado.textContent = '';
-  descriptografado.textContent = '';
-
-  const erro = validarSenha(senhaInput);
-  if (erro) {
-    resultado.innerHTML = `<p class="error">${erro}</p>`;
-    return;
-  }
-
-  const A = Number(senhaInput[0]);
-  const B = Number(senhaInput[1]);
-  const C = Number(senhaInput[2]);
-  const D = Number(senhaInput[3]);
-
-  // Criptografia
-  const X = 4*A + 5;
-  const Y = 2*(B**2) - 3;
-  const Z = 3*C + 7;
-  const W = 5*D - 4;
-
-  function formatar2Digitos(num) {
-    return num.toString().padStart(2,'0');
-  }
-  const senhaCriptografada = formatar2Digitos(X) + formatar2Digitos(Y) + formatar2Digitos(Z) + formatar2Digitos(W);
-
-  resultado.innerHTML = `
-    <strong>Senha original:</strong> ${senhaInput} <br/>
-    <strong>Senha criptografada:</strong> ${senhaCriptografada} <br/>
-    <strong>Valores separados:</strong> X=${X}, Y=${Y}, Z=${Z}, W=${W}
-  `;
-
-  // Descriptografia
-  const A2 = (X - 5) / 4;
-  const B2 = Math.sqrt((Y + 3) / 2);
-  const C2 = (Z - 7) / 3;
-  const D2 = (W + 4) / 5;
-
-  function inteiroEValido(num) {
-    return Number.isInteger(num) && num >= 1 && num <= 9;
-  }
-
-  if ([A2, B2, C2, D2].every(inteiroEValido)) {
-    const senhaDescriptografada = `${A2}${B2}${C2}${D2}`;
-    descriptografado.innerHTML = `<strong>Senha descriptografada:</strong> ${senhaDescriptografada}`;
-  } else {
-    descriptografado.innerHTML = `<p class="error">Erro: Não foi possível descriptografar a senha corretamente.</p>`;
-  }
-}
-</script>
-
+      resultado.textContent = `🔒 Senha criptografada: ${criptografada}`;
+    }
+  </script>
 </body>
 </html>
