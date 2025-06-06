@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Criptografia Afrasmatye</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afrasmatye Criptografia</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -12,99 +12,108 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(145deg, #181818, #1e1e1e);
-      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      background-color: #e8e5dc;
+      color: #333;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      padding: 2rem;
-      min-height: 100vh;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      color: #00ffcc;
-      text-align: center;
+      justify-content: center;
+      height: 100vh;
     }
 
     .container {
-      background-color: #222;
+      background-color: #f7f6f2;
       padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
-      width: 100%;
-      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
       text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #5a5a4e;
     }
 
     input {
-      padding: 0.8rem 1rem;
+      padding: 0.7rem 1rem;
       font-size: 1rem;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      border: none;
       outline: none;
-      margin-bottom: 1rem;
       width: 100%;
-      background-color: #333;
-      color: #fff;
+      background-color: #fff;
+      color: #333;
+      margin-bottom: 1rem;
+      letter-spacing: 0.2em;
+      text-align: center;
+    }
+
+    input:focus {
+      border-color: #a0a092;
     }
 
     button {
-      background: #00ffcc;
-      color: #000;
-      font-weight: 700;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background-color: #b3b39d;
+      color: #fff;
       border: none;
-      padding: 0.8rem 1.2rem;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1rem;
       transition: all 0.3s ease;
+      font-weight: 600;
     }
 
     button:hover {
-      transform: scale(1.05);
-      background: #00e6b8;
-      box-shadow: 0 5px 15px rgba(0, 255, 204, 0.3);
+      background-color: #9d9d8a;
     }
 
     .output {
-      margin-top: 1.5rem;
-      font-size: 1.2rem;
-      background-color: #111;
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #5a5a4e;
+      background-color: #fff;
       padding: 1rem;
       border-radius: 8px;
-      word-break: break-all;
-      color: #00ffcc;
+      border: 1px solid #ddd;
     }
 
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      button {
-        width: 100%;
-      }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <h1>🔐 Sistema Afrasmatye de Criptografia</h1>
   <div class="container">
-    <input type="text" id="senha" placeholder="Digite uma senha de 4 dígitos (1-9)">
+    <h1>Sistema Afrasmatye</h1>
+    <input
+      type="text"
+      id="senha"
+      placeholder="Digite 4 dígitos (1-9)"
+      maxlength="4"
+      oninput="validarInput(this)"
+    />
     <button onclick="criptografar()">Criptografar</button>
     <div class="output" id="resultado"></div>
+    <div class="footer">Seu código seguro com elegância.</div>
   </div>
 
   <script>
+    function validarInput(input) {
+      input.value = input.value.replace(/[^1-9]/g, '').slice(0, 4);
+    }
+
     function criptografar() {
       const senha = document.getElementById('senha').value.trim();
       const resultado = document.getElementById('resultado');
 
-      if (!/^[1-9]{4}$/.test(senha)) {
-        resultado.textContent = '⚠️ A senha deve conter exatamente 4 dígitos de 1 a 9 (sem zeros ou letras).';
+      if (senha.length !== 4) {
+        resultado.textContent = 'Digite exatamente 4 dígitos entre 1 e 9.';
         return;
       }
 
@@ -120,8 +129,9 @@
 
       const criptografada = `${X.toString().padStart(2, '0')}${Y.toString().padStart(2, '0')}${Z.toString().padStart(2, '0')}${W.toString().padStart(2, '0')}`;
 
-      resultado.textContent = `🔒 Senha criptografada: ${criptografada}`;
+      resultado.textContent = `🔐 Senha criptografada: ${criptografada}`;
     }
   </script>
 </body>
 </html>
+
