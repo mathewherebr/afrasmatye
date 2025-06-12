@@ -2,164 +2,159 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Afrasmatye - Criptografia de Senhas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>afrasmatye</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #e9e7df;
       margin: 0;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(145deg, #f0f0f0, #d2e3f7);
+      color: #333;
+    }
+
+    .intro, .main-content {
+      display: none;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      color: #444;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .intro {
+      display: flex;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-size: 2rem;
-      color: #2f2f2f;
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      color: #1a3e6e;
     }
 
-    .section {
-      background: #f4f3ee;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      max-width: 380px;
-      width: 100%;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    input {
-      padding: 12px 20px;
-      font-size: 1.2rem;
-      width: 90%;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      outline: none;
-      margin-bottom: 20px;
-      transition: box-shadow 0.3s;
-    }
-
-    input:focus {
-      box-shadow: 0 0 5px #aaa;
+    p {
+      font-size: 1.2em;
+      margin-bottom: 2em;
+      max-width: 500px;
     }
 
     button {
-      background-color: #d1cfc5;
+      padding: 12px 28px;
+      font-size: 1em;
+      background-color: #1a3e6e;
+      color: white;
       border: none;
-      padding: 12px 30px;
-      font-size: 1rem;
-      border-radius: 25px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      margin: 5px;
+      transition: transform 0.3s, background-color 0.3s;
     }
 
     button:hover {
-      background-color: #b8b5aa;
+      background-color: #153257;
       transform: scale(1.05);
     }
 
-    .resultado {
-      margin-top: 15px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #2e2e2e;
+    .main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      animation: fadeIn 1s ease forwards;
     }
 
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.9rem;
-      color: #888;
+    input {
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #999;
+      width: 250px;
+      text-align: center;
+    }
+
+    .section {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-
-  <div class="section">
-    <h1>Criptografar Senha</h1>
-    <input type="text" id="senha" placeholder="Digite 4 dígitos de 1 a 9" maxlength="4"/>
-    <button onclick="criptografar()">Criptografar</button>
-    <div class="resultado" id="resultadoCriptografia"></div>
+  <div class="intro" id="intro">
+    <h1>afrasmatye</h1>
+    <p>Bem-vindo ao seu sistema inteligente de criptografia. Proteja suas senhas com segurança e estilo!</p>
+    <button onclick="entrarNoSistema()">Entrar</button>
   </div>
 
-  <div class="section">
-    <h1>Descriptografar Senha</h1>
-    <input type="text" id="criptografada" placeholder="Digite os 4 números criptografados"/>
-    <button onclick="descriptografar()">Descriptografar</button>
-    <div class="resultado" id="resultadoDescriptografia"></div>
+  <div class="main-content" id="main">
+    <div class="section">
+      <h2>Criptografar Senha</h2>
+      <input id="senhaInput" maxlength="4" placeholder="Digite 4 dígitos" />
+      <button onclick="criptografar()">Criptografar</button>
+      <p id="resultado"></p>
+    </div>
+    <div class="section">
+      <h2>Descriptografar Senha</h2>
+      <input id="criptografadaInput" placeholder="Digite a senha criptografada" />
+      <button onclick="descriptografar()">Descriptografar</button>
+      <p id="saida"></p>
+    </div>
   </div>
-
-  <div class="footer">© 2025 Afrasmatye Crypt</div>
 
   <script>
-    function criptografar() {
-      const senha = document.getElementById("senha").value;
+    function entrarNoSistema() {
+      document.getElementById('intro').style.display = 'none';
+      const main = document.getElementById('main');
+      main.style.display = 'flex';
+    }
 
-      if (!/^[1-9]{4}$/.test(senha)) {
-        document.getElementById("resultadoCriptografia").innerText = "Digite exatamente 4 dígitos de 1 a 9.";
+    function criptografar() {
+      const senha = document.getElementById('senhaInput').value;
+      if (senha.length !== 4 || /[^1-9]/.test(senha)) {
+        document.getElementById('resultado').innerText = "Digite exatamente 4 dígitos diferentes de zero.";
         return;
       }
-
-      const A = parseInt(senha[0]);
-      const B = parseInt(senha[1]);
-      const C = parseInt(senha[2]);
-      const D = parseInt(senha[3]);
-
-      const X = 4 * A + 5;
-      const Y = 2 * B * B + 1;
-      const Z = 3 * C + 7;
-      const W = 5 * D - 4;
-
-      const senhaCriptografada = `${X}${Y}${Z}${W}`;
-      document.getElementById("resultadoCriptografia").innerText = `Senha criptografada: ${senhaCriptografada}`;
+      const [A, B, C, D] = senha.split('').map(Number);
+      const X = (3 * A + 7).toString().padStart(2, '0');
+      const Y = (B ** 2 + 9).toString().padStart(2, '0');
+      const Z = (C ** 2 + 15).toString().padStart(2, '0');
+      const W = (3 * D + 8).toString().padStart(2, '0');
+      const resultado = `${X}${Y}${Z}${W}`;
+      document.getElementById('resultado').innerText = `Senha criptografada: ${resultado}`;
     }
 
     function descriptografar() {
-      const input = document.getElementById("criptografada").value.trim();
-
-      if (!/^\d{6,8}$/.test(input)) {
-        document.getElementById("resultadoDescriptografia").innerText = "Digite entre 6 e 8 números válidos.";
+      const entrada = document.getElementById('criptografadaInput').value;
+      if (entrada.length % 8 !== 0) {
+        document.getElementById('saida').innerText = "Senha criptografada inválida. Deve ter múltiplos de 8 dígitos.";
         return;
       }
+      let resultado = "Senha original: ";
+      for (let i = 0; i < entrada.length; i += 8) {
+        const bloco = entrada.substring(i, i + 8);
+        const X = parseInt(bloco.substring(0, 2));
+        const Y = parseInt(bloco.substring(2, 4));
+        const Z = parseInt(bloco.substring(4, 6));
+        const W = parseInt(bloco.substring(6, 8));
 
-      // Tentamos dividir o input de forma automática em 4 blocos
-      let tentativas = [];
-      for (let i = 1; i < input.length - 2; i++) {
-        for (let j = i + 1; j < input.length - 1; j++) {
-          for (let k = j + 1; k < input.length; k++) {
-            tentativas.push([
-              parseInt(input.slice(0, i)),
-              parseInt(input.slice(i, j)),
-              parseInt(input.slice(j, k)),
-              parseInt(input.slice(k))
-            ]);
-          }
+        const A = (X - 7) / 3;
+        const B = Math.sqrt(Y - 9);
+        const C = Math.sqrt(Z - 15);
+        const D = (W - 8) / 3;
+
+        if ([A, B, C, D].some(n => !Number.isInteger(n) || n < 1 || n > 9)) {
+          resultado += "[inválido] ";
+        } else {
+          resultado += `${A}${B}${C}${D} `;
         }
       }
-
-      for (const [X, Y, Z, W] of tentativas) {
-        const A = (X - 5) / 4;
-        const B = Math.sqrt((Y - 1) / 2);
-        const C = (Z - 7) / 3;
-        const D = (W + 4) / 5;
-
-        if ([A, B, C, D].every(n => Number.isInteger(n) && n >= 1 && n <= 9)) {
-          const senhaOriginal = `${A}${B}${C}${D}`;
-          document.getElementById("resultadoDescriptografia").innerText = `Senha original: ${senhaOriginal}`;
-          return;
-        }
-      }
-
-      document.getElementById("resultadoDescriptografia").innerText = "Não foi possível descriptografar com segurança.";
+      document.getElementById('saida').innerText = resultado.trim();
     }
   </script>
-
 </body>
 </html>
