@@ -82,6 +82,42 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+
+    #helpBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #1a3e6e;
+      color: white;
+      font-size: 1.4em;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    #helpBox {
+      display: none;
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      width: 320px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      text-align: left;
+      font-size: 0.95em;
+      z-index: 9999;
+    }
+
+    #helpBox h3 {
+      margin-top: 0;
+      color: #1a3e6e;
+    }
   </style>
 </head>
 <body>
@@ -104,6 +140,34 @@
       <button onclick="descriptografar()">Descriptografar</button>
       <p id="saida"></p>
     </div>
+  </div>
+
+  <button id="helpBtn" onclick="toggleHelp()">?</button>
+  <div id="helpBox">
+    <h3>Como funciona?</h3>
+    <p><strong>Criptografia:</strong></p>
+    <ul>
+      <li>X = 3A + 7</li>
+      <li>Y = B² + 9</li>
+      <li>Z = C² + 15</li>
+      <li>W = 3D + 8</li>
+    </ul>
+    <p>Exemplo: Senha 9168</p>
+    <ul>
+      <li>A=9 → X = 3×9 + 7 = 34</li>
+      <li>B=1 → Y = 1² + 9 = 10</li>
+      <li>C=6 → Z = 6² + 15 = 51</li>
+      <li>D=8 → W = 3×8 + 8 = 32</li>
+    </ul>
+    <p>Resultado criptografado: <strong>34105132</strong></p>
+    <hr>
+    <p><strong>Descriptografia:</strong></p>
+    <ul>
+      <li>A = (X - 7) / 3</li>
+      <li>B = √(Y - 9)</li>
+      <li>C = √(Z - 15)</li>
+      <li>D = (W - 8) / 3</li>
+    </ul>
   </div>
 
   <script>
@@ -154,6 +218,11 @@
         }
       }
       document.getElementById('saida').innerText = resultado.trim();
+    }
+
+    function toggleHelp() {
+      const box = document.getElementById('helpBox');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
     }
   </script>
 </body>
